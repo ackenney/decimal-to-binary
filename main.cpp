@@ -79,3 +79,90 @@ void decimalToBinary(int input, ofstream& outputFile)
 	return;
 
 }// End of decimalToBinary function
+
+void decimalToHexadecimal(int input, ofstream& outputFile)
+{
+	// Declaring variables
+	int inputValue = input;
+	int tempVar;
+	int count = 0;
+	stack<char> hexStack; // Stack to hold the hexadecimal digits
+
+	while (inputValue > 0)
+	{
+		// Getting the remainder
+		tempVar = inputValue % HEXADECIMAL_BASE;
+
+		// Hexadecimal numbers go to 9 then user 'A' - 'F'
+		// so if the remainder is less than 10 it gets added to the stack 
+		// and isn't changed to a letter
+
+		if (tempVar < 10)
+		{
+			hexStack.push(tempVar + 48);
+			count += 1;
+		}
+
+		// If the remainder is 10 or greater the switch in this else statement
+		// adds the correct character value to the stack
+		else
+		{
+
+			switch (tempVar)
+			{
+
+			case 10:
+				hexStack.push('A');
+				count += 1;
+				break;
+
+			case 11:
+				hexStack.push('B');
+				count += 1;
+				break;
+
+			case 12:
+				hexStack.push('C');
+				count += 1;
+				break;
+
+			case 13:
+				hexStack.push('D');
+				count += 1;
+				break;
+
+			case 14:
+				hexStack.push('E');
+				count += 1;
+				break;
+
+			case 15:
+				hexStack.push('F');
+				count += 1;
+				break;
+			}
+		}
+
+		// Dividing by base to get the next value
+		inputValue = inputValue / HEXADECIMAL_BASE;
+	}
+
+	// Making sure the stack has to values in it for formatting
+	while (count < HEX_BIT_LENGTH)
+	{
+		hexStack.push('0'); // Default value
+		count += 1; // Adding 1 to the number count
+	}
+
+
+
+	// Print loop prints until the stack is empty
+	while (!hexStack.empty())
+	{
+		cout << hexStack.top(); // Printing top value to console
+		outputFile << hexStack.top(); // Printing top value to output file
+		hexStack.pop(); // Removing top value
+	}
+
+	return;
+} // End of decimalToHexadecimal function
