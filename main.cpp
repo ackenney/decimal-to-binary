@@ -18,6 +18,11 @@ const int BCD_DIGIT_LENGTH = 3;
 const int INPUT_SET_LENGTH = 255;
 
 
+// Prototype functions
+void decimalToBinary(int x, ofstream& oFile);
+void decimalToHexadecimal(int x, ofstream& Ofile);
+void decimalToBinaryCodedDecimal(int x, ofstream& oFile);
+
 int main()
 {
 	return 0;
@@ -166,3 +171,83 @@ void decimalToHexadecimal(int input, ofstream& outputFile)
 
 	return;
 } // End of decimalToHexadecimal function
+
+
+void decimalToBinaryCodedDecimal(int input, ofstream& outputFile)
+{
+	// Stack of each value that needs to be converted to binary
+	stack<int> bcdStack;
+
+	// Stack that hold the value of the binary number
+	stack<int> binaryStack;
+	int temp;
+	int BCDIndex = 0;
+
+	// This while loop will separate each digit and put it in a stack.
+	// Each digit will be individually converted to binary to get the BCD code
+	while (input > 0)
+	{
+		temp = input % 10; // Getting digit
+		input = input / 10; // Going to next value
+		bcdStack.push(temp); // adding the digit to the stack
+		BCDIndex += 1; // counting how many numbers are added
+
+	}
+
+	// This while loop checks if the stack has at least three digits
+	// If it doesn't then it will add a zero as a default 
+	while (BCDIndex < BCD_DIGIT_LENGTH)
+	{
+		bcdStack.push(0); // default value
+		BCDIndex += 1;	  // adding to the count BCD digits
+	}
+
+	//
+	while (!bcdStack.empty())
+	{
+		// Temp is being set to one of the BCD values 
+		// that needs to be conveted to binary
+		temp = bcdStack.top();
+
+		// Index variable to count the number of bits
+		int binaryIndex = 0;
+
+		// This while loop converts one of the BCD digits to binary
+		while (temp > 0)
+		{
+			// Adding the remainder to the stack of binary values
+			binaryStack.push(temp % BINARY_BASE);
+
+			// incrementing index by 1 
+			// Counting the number of bits in the binary value
+			binaryIndex += 1;
+
+			// Going to next value
+			temp = temp / BINARY_BASE;
+		}
+
+		// Making the binary number the correct length
+		while (binaryIndex < BINARY_BIT_LENGTH)
+		{
+
+			binaryStack.push(0); // default zero value
+			binaryIndex += 1;	// counting how long the binary number is
+
+		}
+
+		// Print loop for binary number
+		while (!binaryStack.empty())
+		{
+			// outputing top digit of stack
+			cout << binaryStack.top(); // output to console
+			outputFile << binaryStack.top(); // output to file
+			binaryStack.pop();// going to the next digit
+		}
+
+		// Printing a space after every number
+		cout << " ";  // output to console
+		outputFile << " "; // output to file
+
+		bcdStack.pop(); // Going to the next value to be converted
+	}
+} // End of decimalToBinaryCodedDecimal function
