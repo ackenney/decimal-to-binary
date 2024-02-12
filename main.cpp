@@ -7,6 +7,7 @@
 using std::stack;
 using std::ofstream;
 using std::cout;
+using std::endl;
 
 
 // Constant base values
@@ -25,6 +26,40 @@ void decimalToBinaryCodedDecimal(int x, ofstream& oFile);
 
 int main()
 {
+	// Declaring stream variable
+	ofstream outputFile;
+
+	outputFile.open("Output"); // Opening output file
+
+	// Header for console
+	cout << "DECIMAL\t  " << "BINARY\t" << "HEXADECIMAL\t" << "BCD\n";
+
+	// Header for output file
+	outputFile << "DECIMAL\t  " << "BINARY\t" << "HEXADECIMAL\t" << "BCD\n";
+
+	// This for loop tests each conversion function with input from 1 to 255
+	for (int input = 0; input <= INPUT_SET_LENGTH; input++)
+	{
+		// Binary output
+		cout << input << "\t  "; // Formatting output to console
+		outputFile << input << "\t  "; // Formatting output to output file
+		decimalToBinary(input, outputFile); // Function call
+
+		// Hexadecimal output
+		cout << "\t"; // Formatting output to console
+		outputFile << "\t"; // Formatting output to output file
+		decimalToHexadecimal(input, outputFile); // Function call
+
+		// BCD output
+		cout << "\t\t"; // Formatting output to console
+		outputFile << "\t\t"; // Formatting output to output file
+		decimalToBinaryCodedDecimal(input, outputFile); // Function call
+		cout << endl; // Adding a line for formatting
+		outputFile << endl;
+
+	} // End of for loop 
+
+	outputFile.close(); // closing file
 	return 0;
 }
 
